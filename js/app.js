@@ -1,24 +1,41 @@
-// Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+var allEnemies = [];
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+var enemyYPos = {
+  1: -20,
+  2: 60,
+  3: 140,
+  4: 220
+};
+
+
+// Enemies our player must avoid
+var Enemy = function(x, y) {
+
+  // Variables applied to each of our instances go here,
+  // we've provided one for you to get started
+
+  // The image/sprite for our enemies, this uses
+  // a helper we've provided to easily load images
+  this.sprite = 'images/enemy-bug.png';
+  this.y = x;
+  this.x = y;
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+  this.x++ * dt;
+  // Generate random number to dice enemy in a row
+  // console.log(Math.floor( Math.random() * 6+1) );
+  //
+  // You should multiply any movement by the dt parameter
+  // which will ensure the game runs at the same speed for
+  // all computers.
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Now write your own player class
@@ -28,19 +45,41 @@ Enemy.prototype.render = function() {
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
+
+allEnemies.push(new Enemy(enemyYPos[1], 0));
+allEnemies.push(new Enemy(enemyYPos[2], 0));
+allEnemies.push(new Enemy(enemyYPos[3], 0));
 // Place the player object in a variable called player
 
+var player = function() {
 
+  this.sprite = 'images/char-boy.png';
+  this.x = 300;
+  this.y = 400;
+
+};
+
+player.prototype.update = function(dt) {
+  // You should multiply any movement by the dt parameter
+  // which will ensure the game runs at the same speed for
+  // all computers.
+};
+
+player.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+player = new player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
+  var allowedKeys = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down'
+  };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+  player.handleInput(allowedKeys[e.keyCode]);
 });
