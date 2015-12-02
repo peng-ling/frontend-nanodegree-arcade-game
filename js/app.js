@@ -1,5 +1,7 @@
 var allEnemies = [];
 
+var i = 99;
+
 var enemyYPos = {
   1: -20,
   2: 60,
@@ -9,7 +11,7 @@ var enemyYPos = {
 
 
 // Enemies our player must avoid
-var Enemy = function(x, y) {
+var Enemy = function(y, x) {
 
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
@@ -17,17 +19,14 @@ var Enemy = function(x, y) {
   // The image/sprite for our enemies, this uses
   // a helper we've provided to easily load images
   this.sprite = 'images/enemy-bug.png';
-  this.y = x;
-  this.x = y;
+  this.y = enemyYPos[Math.floor(Math.random() * 4 + 1)];
+  this.x = 0;
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
   this.x++ * dt;
-  // Generate random number to dice enemy in a row
-  // console.log(Math.floor( Math.random() * 6+1) );
-  //
   // You should multiply any movement by the dt parameter
   // which will ensure the game runs at the same speed for
   // all computers.
@@ -46,9 +45,9 @@ Enemy.prototype.render = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 
-allEnemies.push(new Enemy(enemyYPos[1], 0));
-allEnemies.push(new Enemy(enemyYPos[2], 0));
-allEnemies.push(new Enemy(enemyYPos[3], 0));
+
+//allEnemies.push(new Enemy(enemyYPos[2], 0));
+//allEnemies.push(new Enemy(enemyYPos[3], 0));
 // Place the player object in a variable called player
 
 var player = function() {
@@ -60,6 +59,8 @@ var player = function() {
 };
 
 player.prototype.update = function(dt) {
+
+
   // You should multiply any movement by the dt parameter
   // which will ensure the game runs at the same speed for
   // all computers.
@@ -81,5 +82,5 @@ document.addEventListener('keyup', function(e) {
     40: 'down'
   };
 
-  player.handleInput(allowedKeys[e.keyCode]);
+  //player.handleInput(allowedKeys[e.keyCode]);
 });
