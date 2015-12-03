@@ -98,8 +98,11 @@ var Engine = (function(global) {
     player.update();
     //
     i++;
-    console.log(i);
-    if (i === 150) {
+    //console.log(i);
+    console.log( //'player position x ' +
+      allEnemies[1] //',y ' + allEnemies[1].y
+    );
+    if (i === 100) {
       allEnemies.push(new Enemy());
       i = 0;
     }

@@ -6,7 +6,8 @@ var enemyYPos = {
   1: -20,
   2: 60,
   3: 140,
-  4: 220
+  4: 220,
+  5: 300
 };
 
 
@@ -19,7 +20,7 @@ var Enemy = function(y, x) {
   // The image/sprite for our enemies, this uses
   // a helper we've provided to easily load images
   this.sprite = 'images/enemy-bug.png';
-  this.y = enemyYPos[Math.floor(Math.random() * 4 + 1)];
+  this.y = enemyYPos[Math.floor(Math.random() * 5 + 1)];
   this.x = 0;
 };
 
@@ -70,6 +71,22 @@ player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+player.prototype.handleInput = function(move) {
+  switch (move) {
+    case 'left':
+      this.x = this.x - 10;
+      break;
+    case 'up':
+      this.y = this.y - 10;
+      break;
+    case 'right':
+      this.x = this.x + 10;
+      break;
+    case 'down':
+      this.y = this.y + 10;
+  }
+};
+
 player = new player();
 
 // This listens for key presses and sends the keys to your
@@ -82,5 +99,5 @@ document.addEventListener('keyup', function(e) {
     40: 'down'
   };
 
-  //player.handleInput(allowedKeys[e.keyCode]);
+  player.handleInput(allowedKeys[e.keyCode]);
 });
