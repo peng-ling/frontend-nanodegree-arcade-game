@@ -1,4 +1,4 @@
-var allEnemies = [];
+allEnemies = [];
 
 var i = 99;
 
@@ -10,9 +10,16 @@ var enemyYPos = {
   5: 300
 };
 
+Number.prototype.between = function(first, last) {
+  return (first < last ? this >= first && this <= last : this >= last && this <= first);
+};
+
+var audio = new Audio('sounds/beep-07.wav');
+
+
 
 // Enemies our player must avoid
-var Enemy = function(y, x) {
+var Enemy = function() {
 
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
@@ -56,7 +63,16 @@ var player = function() {
   this.sprite = 'images/char-boy.png';
   this.x = 300;
   this.y = 400;
-
+  this.smashup = function() {
+    if (allEnemies.length > 0) {
+      for (var enemy in allEnemies) {
+        if (this.x.between(allEnemies[enemy].x - 80, allEnemies[enemy].x + 80) && this.y.between(allEnemies[enemy].y - 80, allEnemies[enemy].y + 80)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
 };
 
 player.prototype.update = function(dt) {
@@ -86,6 +102,12 @@ player.prototype.handleInput = function(move) {
       this.y = this.y + 10;
   }
 };
+
+/*player.prototype.smashup = function() {
+for (enemy in allEnemies) {
+ (this.x.between(enemy.x - 10, enemy.x + 10) && this.y.between(enemy.y - 10, enemy.y + 10));
+};
+}*/
 
 player = new player();
 

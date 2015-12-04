@@ -96,15 +96,15 @@ var Engine = (function(global) {
       enemy.update(dt);
     });
     player.update();
-    //
     i++;
-    //console.log(i);
-    console.log( //'player position x ' +
-      allEnemies[1] //',y ' + allEnemies[1].y
-    );
     if (i === 100) {
       allEnemies.push(new Enemy());
       i = 0;
+    }
+    console.log(player.smashup());
+
+    if (player.smashup() === true) {
+      audio.play();
     }
   }
 
