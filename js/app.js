@@ -45,6 +45,13 @@ Enemy.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+Enemy.prototype.out = function() {
+  if (this.x > 606) {
+    return true;
+    //audio.play();
+  }
+};
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.

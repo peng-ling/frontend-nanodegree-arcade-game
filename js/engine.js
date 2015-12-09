@@ -102,9 +102,23 @@ var Engine = (function(global) {
       i = 0;
     }
     console.log(player.smashup());
+    console.log(allEnemies[0].out());
+
+    allEnemies.forEach(function(enemy, index) {
+      console.log(enemy);
+      if (enemy.out() === true) {
+        console.log("Enemy No. " + index + " is out");
+        audio.play();
+        allEnemies.splice(index, 1);
+      }
+    });
 
     if (player.smashup() === true) {
-      audio.play();
+      //audio.play();
+      //canvas.clearRect(0, 0, canvas.width, canvas.height);
+      delete allEnemies;
+      delete player;
+      console.log(player.smashup());
     }
   }
 
