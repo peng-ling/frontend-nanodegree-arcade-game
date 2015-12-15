@@ -10,13 +10,15 @@ var enemyYPos = {
   5: 300
 };
 
+var playerParameter = {
+
+}
+
 Number.prototype.between = function(first, last) {
   return (first < last ? this >= first && this <= last : this >= last && this <= first);
 };
 
 var audio = new Audio('sounds/beep-07.wav');
-
-
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -68,10 +70,14 @@ Enemy.prototype.out = function() {
 var player = function() {
 
   this.sprite = 'images/char-boy.png';
-  this.x = 300;
-  this.y = 400;
+  this.x = 200;
+  this.y = 420;
+  this.maxup = 0;
+  this.maxdown = 420;
+  this.maxright = 400;
+  this.maxleft = 0;
   this.smashup = function() {
-    if (allEnemies.length > 0) {
+    if (typeof allEnemies != "undefined") {
       for (var enemy in allEnemies) {
         if (this.x.between(allEnemies[enemy].x - 80, allEnemies[enemy].x + 80) && this.y.between(allEnemies[enemy].y - 80, allEnemies[enemy].y + 80)) {
           return true;
@@ -95,26 +101,28 @@ player.prototype.render = function() {
 };
 
 player.prototype.handleInput = function(move) {
+
   switch (move) {
     case 'left':
-      this.x = this.x - 10;
+      if (this.x >= this.maxleft)
+        this.x = this.x - 10;
       break;
     case 'up':
-      this.y = this.y - 10;
+      if (this.y >= this.maxup) {
+        this.y = this.y - 10;
+      }
       break;
     case 'right':
-      this.x = this.x + 10;
+      if (this.x <= this.maxright) {
+        this.x = this.x + 10;
+      }
       break;
     case 'down':
-      this.y = this.y + 10;
+      if (this.y <= this.maxdown) {
+        this.y = this.y + 10;
+      }
   }
 };
-
-/*player.prototype.smashup = function() {
-for (enemy in allEnemies) {
- (this.x.between(enemy.x - 10, enemy.x + 10) && this.y.between(enemy.y - 10, enemy.y + 10));
-};
-}*/
 
 player = new player();
 

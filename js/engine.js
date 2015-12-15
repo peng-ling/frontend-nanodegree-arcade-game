@@ -92,33 +92,27 @@ var Engine = (function(global) {
    * render methods.
    */
   function updateEntities(dt) {
-    allEnemies.forEach(function(enemy) {
-      enemy.update(dt);
-    });
-    player.update();
-    i++;
-    if (i === 100) {
-      allEnemies.push(new Enemy());
-      i = 0;
-    }
-    console.log(player.smashup());
-    console.log(allEnemies[0].out());
-
-    allEnemies.forEach(function(enemy, index) {
-      console.log(enemy);
-      if (enemy.out() === true) {
-        console.log("Enemy No. " + index + " is out");
-        audio.play();
-        allEnemies.splice(index, 1);
+    if (typeof allEnemies != "undefined") {
+      allEnemies.forEach(function(enemy) {
+        enemy.update(dt);
+      });
+      player.update();
+      i++;
+      if (i === 100) {
+        allEnemies.push(new Enemy());
+        i = 0;
       }
-    });
 
-    if (player.smashup() === true) {
-      //audio.play();
-      //canvas.clearRect(0, 0, canvas.width, canvas.height);
-      delete allEnemies;
-      delete player;
-      console.log(player.smashup());
+      reset();
+
+      allEnemies.forEach(function(enemy, index) {
+        //console.log(enemy);
+        if (enemy.out() === true) {
+          console.log("Enemy No. " + index + " is out");
+          audio.play();
+          allEnemies.splice(index, 1);
+        }
+      });
     }
   }
 
@@ -160,8 +154,6 @@ var Engine = (function(global) {
         ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
       }
     }
-
-
     renderEntities();
   }
 
@@ -173,10 +165,11 @@ var Engine = (function(global) {
     /* Loop through all of the objects within the allEnemies array and call
      * the render function you have defined.
      */
-    allEnemies.forEach(function(enemy) {
-      enemy.render();
-    });
-
+    if (typeof allEnemies != "undefined") {
+      allEnemies.forEach(function(enemy) {
+        enemy.render();
+      });
+    }
     player.render();
   }
 
@@ -185,7 +178,11 @@ var Engine = (function(global) {
    * those sorts of things. It's only called once by the init() method.
    */
   function reset() {
-    // noop
+    if (player.smashup()) {
+      allEnemies.length = 0;
+      player.x = 200;
+      player.y = 400;
+    }
   }
 
   /* Go ahead and load all of the images we know we're going to need to
