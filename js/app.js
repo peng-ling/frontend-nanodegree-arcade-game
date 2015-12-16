@@ -10,10 +10,6 @@ var enemyYPos = {
   5: 300
 };
 
-var playerParameter = {
-
-}
-
 Number.prototype.between = function(first, last) {
   return (first < last ? this >= first && this <= last : this >= last && this <= first);
 };
@@ -124,7 +120,10 @@ player.prototype.handleInput = function(move) {
   }
 };
 
+
+
 player = new player();
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

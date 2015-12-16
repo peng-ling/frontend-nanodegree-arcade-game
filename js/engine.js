@@ -19,15 +19,22 @@ var Engine = (function(global) {
    * create the canvas element, grab the 2D context for that canvas
    * set the canvas elements height/width and add it to the DOM.
    */
+
+
+
   var doc = global.document,
     win = global.window,
     canvas = doc.createElement('canvas'),
     ctx = canvas.getContext('2d'),
     lastTime;
 
+
   canvas.width = 505;
-  canvas.height = 606;
+  canvas.height = 806;
+
+
   doc.body.appendChild(canvas);
+
 
   /* This function serves as the kickoff point for the game loop itself
    * and handles properly calling the update and render methods.
@@ -109,7 +116,7 @@ var Engine = (function(global) {
         //console.log(enemy);
         if (enemy.out() === true) {
           console.log("Enemy No. " + index + " is out");
-          audio.play();
+          //audio.play();
           allEnemies.splice(index, 1);
         }
       });
@@ -152,6 +159,9 @@ var Engine = (function(global) {
          * we're using them over and over.
          */
         ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+        ctx.font = '30px Calibri';
+        ctx.fillText('Press space to start the Game!', 70, 620);
+        ctx.fill();
       }
     }
     renderEntities();
@@ -165,12 +175,13 @@ var Engine = (function(global) {
     /* Loop through all of the objects within the allEnemies array and call
      * the render function you have defined.
      */
-    if (typeof allEnemies != "undefined") {
+    if (typeof allEnemies !== "undefined") {
       allEnemies.forEach(function(enemy) {
         enemy.render();
       });
     }
     player.render();
+
   }
 
   /* This function does nothing but it could have been a good place to
