@@ -104,8 +104,9 @@ var Engine = (function(global) {
         enemy.update(dt);
       });
       player.update();
+      Gamestate.updatescore();
       i++;
-      if (i === 100) {
+      if (i >= 300 / ((1 + Gamestate.score) / 1000)) {
         allEnemies.push(new Enemy());
         i = 0;
       }
@@ -115,11 +116,14 @@ var Engine = (function(global) {
       allEnemies.forEach(function(enemy, index) {
         //console.log(enemy);
         if (enemy.out() === true) {
-          console.log("Enemy No. " + index + " is out");
           //audio.play();
           allEnemies.splice(index, 1);
         }
       });
+    }
+    //alert(gamestate.started());
+    if (Gamestate.running === true) {
+      console.log("Player made it? " + player.madeit() + " / Gamestate: " + Gamestate.running + "Score: " + Gamestate.score + "Player y:" + player.y);
     }
   }
 
@@ -160,7 +164,12 @@ var Engine = (function(global) {
          */
         ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
         ctx.font = '30px Calibri';
-        ctx.fillText('Press space to start the Game!', 70, 620);
+        if (Gamestate.running === false) {
+          ctx.fillText('Press space to start the Game!', 70, 620);
+        } else {
+          ctx.clearRect(60, 590, 1000, 1000);
+          ctx.fillText('Score: ' + Gamestate.score, 70, 620);
+        }
         ctx.fill();
       }
     }
@@ -175,12 +184,16 @@ var Engine = (function(global) {
     /* Loop through all of the objects within the allEnemies array and call
      * the render function you have defined.
      */
-    if (typeof allEnemies !== "undefined") {
-      allEnemies.forEach(function(enemy) {
-        enemy.render();
-      });
+
+    if (Gamestate.running === true) {
+      console.log('its running');
+      if (typeof allEnemies !== "undefined") {
+        allEnemies.forEach(function(enemy) {
+          enemy.render();
+        });
+      }
+      player.render();
     }
-    player.render();
 
   }
 
@@ -189,7 +202,7 @@ var Engine = (function(global) {
    * those sorts of things. It's only called once by the init() method.
    */
   function reset() {
-    if (player.smashup()) {
+    if (player.smashup() || player.madeit()) {
       allEnemies.length = 0;
       player.x = 200;
       player.y = 400;

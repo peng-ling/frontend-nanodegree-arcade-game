@@ -67,22 +67,27 @@ var player = function() {
 
   this.sprite = 'images/char-boy.png';
   this.x = 200;
-  this.y = 420;
+  this.y = 400;
   this.maxup = 0;
-  this.maxdown = 420;
+  this.maxdown = 336;
   this.maxright = 400;
   this.maxleft = 0;
-  this.smashup = function() {
-    if (typeof allEnemies != "undefined") {
-      for (var enemy in allEnemies) {
-        if (this.x.between(allEnemies[enemy].x - 80, allEnemies[enemy].x + 80) && this.y.between(allEnemies[enemy].y - 80, allEnemies[enemy].y + 80)) {
-          return true;
-        }
+};
+
+player.prototype.smashup = function() {
+  if (typeof allEnemies != "undefined") {
+    for (var enemy in allEnemies) {
+      if (this.x.between(allEnemies[enemy].x - 80, allEnemies[enemy].x + 80) && this.y.between(allEnemies[enemy].y - 80, allEnemies[enemy].y + 80)) {
+        return true;
       }
     }
-    return false;
-  };
-};
+  }
+  return false;
+}
+
+player.prototype.madeit = function() {
+  return this.y <= 20;
+}
 
 player.prototype.update = function(dt) {
 
@@ -101,34 +106,60 @@ player.prototype.handleInput = function(move) {
   switch (move) {
     case 'left':
       if (this.x >= this.maxleft)
-        this.x = this.x - 10;
+        this.x = this.x - 101;
       break;
     case 'up':
       if (this.y >= this.maxup) {
-        this.y = this.y - 10;
+        this.y = this.y - 84;
       }
       break;
     case 'right':
       if (this.x <= this.maxright) {
-        this.x = this.x + 10;
+        this.x = this.x + 101;
       }
       break;
     case 'down':
       if (this.y <= this.maxdown) {
-        this.y = this.y + 10;
+        this.y = this.y + 84;
       }
   }
+};
+
+var gamestate = function() {
+  this.running = false;
+  this.score = 1000;
+};
+
+gamestate.prototype.setgamestate = function(startkey) {
+
+  if (startkey === 'space' || player.smashup === false || player.madeit === false) {
+    this.running = true;
+  }
+};
+
+gamestate.prototype.updatescore = function() {
+
+  if (player.madeit() === true && player.smashup() === false) {
+    console.log('inc score');
+    this.score = this.score + 1000;
+  }
+  if (player.smashup() === true) {
+    this.score = 0;
+  }
+  return this.score;
 };
 
 
 
 player = new player();
+Gamestate = new gamestate();
 
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
   var allowedKeys = {
+    32: 'space',
     37: 'left',
     38: 'up',
     39: 'right',
@@ -136,4 +167,5 @@ document.addEventListener('keyup', function(e) {
   };
 
   player.handleInput(allowedKeys[e.keyCode]);
+  Gamestate.setgamestate(allowedKeys[e.keyCode]);
 });
