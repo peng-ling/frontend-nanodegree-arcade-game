@@ -1,4 +1,4 @@
-allEnemies = [];
+var allEnemies = [];
 
 var i = 10000;
 
@@ -14,8 +14,6 @@ Number.prototype.between = function(first, last) {
   return (first < last ? this >= first && this <= last : this >= last && this <= first);
 };
 
-var audio = new Audio('sounds/beep-07.wav');
-
 // Enemies our player must avoid
 var Enemy = function() {
 
@@ -27,6 +25,7 @@ var Enemy = function() {
   this.sprite = 'images/enemy-bug.png';
   this.y = enemyYPos[Math.floor(Math.random() * 5 + 1)];
   this.x = 0;
+  this.outofcanvas = 606;
 };
 
 // Update the enemy's position, required method for game
@@ -44,7 +43,7 @@ Enemy.prototype.render = function() {
 };
 
 Enemy.prototype.out = function() {
-  if (this.x > 606) {
+  if (this.x > this.outofcanvas) {
     return true;
     //audio.play();
   }
