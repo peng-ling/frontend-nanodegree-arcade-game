@@ -1,6 +1,6 @@
 allEnemies = [];
 
-var i = 99;
+var i = 10000;
 
 var enemyYPos = {
   1: -20,
@@ -83,14 +83,13 @@ player.prototype.smashup = function() {
     }
   }
   return false;
-}
+};
 
 player.prototype.madeit = function() {
   return this.y <= 20;
-}
+};
 
 player.prototype.update = function(dt) {
-
 
   // You should multiply any movement by the dt parameter
   // which will ensure the game runs at the same speed for
@@ -140,7 +139,6 @@ gamestate.prototype.setgamestate = function(startkey) {
 gamestate.prototype.updatescore = function() {
 
   if (player.madeit() === true && player.smashup() === false) {
-    console.log('inc score');
     this.score = this.score + 1000;
   }
   if (player.smashup() === true) {
@@ -149,11 +147,8 @@ gamestate.prototype.updatescore = function() {
   return this.score;
 };
 
-
-
 player = new player();
 Gamestate = new gamestate();
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -168,4 +163,5 @@ document.addEventListener('keyup', function(e) {
 
   player.handleInput(allowedKeys[e.keyCode]);
   Gamestate.setgamestate(allowedKeys[e.keyCode]);
+
 });

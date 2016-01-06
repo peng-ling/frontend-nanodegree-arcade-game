@@ -20,21 +20,16 @@ var Engine = (function(global) {
    * set the canvas elements height/width and add it to the DOM.
    */
 
-
-
   var doc = global.document,
     win = global.window,
     canvas = doc.createElement('canvas'),
     ctx = canvas.getContext('2d'),
     lastTime;
 
-
   canvas.width = 505;
   canvas.height = 806;
 
-
   doc.body.appendChild(canvas);
-
 
   /* This function serves as the kickoff point for the game loop itself
    * and handles properly calling the update and render methods.
@@ -106,15 +101,14 @@ var Engine = (function(global) {
       player.update();
       Gamestate.updatescore();
       i++;
-      if (i >= 300 / ((1 + Gamestate.score) / 1000)) {
+      if (i >= (10000000 * dt / ((1 + Gamestate.score) * 0.075))) {
         allEnemies.push(new Enemy());
-        i = 0;
+        i = 10000 * dt;
       }
 
       reset();
 
       allEnemies.forEach(function(enemy, index) {
-        //console.log(enemy);
         if (enemy.out() === true) {
           //audio.play();
           allEnemies.splice(index, 1);
@@ -122,9 +116,7 @@ var Engine = (function(global) {
       });
     }
     //alert(gamestate.started());
-    if (Gamestate.running === true) {
-      console.log("Player made it? " + player.madeit() + " / Gamestate: " + Gamestate.running + "Score: " + Gamestate.score + "Player y:" + player.y);
-    }
+    if (Gamestate.running === true) {}
   }
 
   /* This function initially draws the "game level", it will then call
@@ -165,10 +157,11 @@ var Engine = (function(global) {
         ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
         ctx.font = '30px Calibri';
         if (Gamestate.running === false) {
+          ctx.clearRect(60, 590, 1000, 1000);
           ctx.fillText('Press space to start the Game!', 70, 620);
         } else {
           ctx.clearRect(60, 590, 1000, 1000);
-          ctx.fillText('Score: ' + Gamestate.score, 70, 620);
+          ctx.fillText('Score: ' + Gamestate.score, 190, 620);
         }
         ctx.fill();
       }
@@ -186,7 +179,6 @@ var Engine = (function(global) {
      */
 
     if (Gamestate.running === true) {
-      console.log('its running');
       if (typeof allEnemies !== "undefined") {
         allEnemies.forEach(function(enemy) {
           enemy.render();
@@ -202,10 +194,17 @@ var Engine = (function(global) {
    * those sorts of things. It's only called once by the init() method.
    */
   function reset() {
-    if (player.smashup() || player.madeit()) {
+    if (player.madeit()) {
       allEnemies.length = 0;
       player.x = 200;
       player.y = 400;
+      allEnemies.push(new Enemy());
+    }
+    if (player.smashup()) {
+      allEnemies.length = 0;
+      player.x = 200;
+      player.y = 400;
+      Gamestate.running = false;
     }
   }
 
